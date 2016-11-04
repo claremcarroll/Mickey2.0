@@ -14,14 +14,23 @@ class CameraButton {
   }
 
   void draw() {
+    if(mouseOver())
     fill(255,0,0);
     rect(distLeft, distBot, viddispW, buttonH);
-    Button camera = new Button(cameraimg, (int)xpos , (int) ypos, 50, 50);
+    Icon camera = new Icon(cameraimg, (int)xpos , (int) ypos, 50, 50);
     camera.draw();
   }
   
+  boolean mouseOver(){
+    if(mouseX > distLeft && mouseX < distLeft+viddispW && mouseY > distBot && mouseY < buttonH + distBot){
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
   boolean checkClick(){
-   if(mousePressed && mouseX > distLeft && mouseX < distLeft+viddispW && mouseY > distBot && mouseY < buttonH + distBot){
+   if(mousePressed && mouseOver()){
      return true;
    } else {
      return false;

@@ -11,10 +11,13 @@ class Hat {
     if(loadedhatimages[number] == null) {
       image = hatimages[number];
       button = buttons[number];
+      
     } else {
       image = loadedhatimages[number];
       button = loadedhatimages[number];
     }
+    
+    //button.resize(buttonW, buttonH);
     
     if(number < half) {
       xpos = col;
@@ -30,7 +33,7 @@ class Hat {
   } 
   void draw() { 
     fill(255);
-    image(button, xpos, ypos, buttonW, buttonH);
+    image(button, xpos, ypos,buttonW, buttonH);
   } 
   
   void checkMouse(){

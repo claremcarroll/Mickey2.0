@@ -1,4 +1,5 @@
 void resetHats() {
+   customhats=false;
    hat1 = defhat1; 
    deleteFile("loadedhat1.png");
    allthehats[0].image = hat1;
@@ -24,6 +25,10 @@ void resetHats() {
    allthehats[5].button = button6;
    deleteFile("loadedhat6.png");
    hat = hat1;
+   deleteFile("loadedsettings.png");
+   settingsbackground = defsettings;
+   deleteFile("loadedframe.png");
+   frame = defframe;
    
    for(int i = 0; i < loadedhatimages.length; i++) {
      loadedhatimages[i] = null;
