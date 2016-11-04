@@ -30,9 +30,6 @@ class Hat {
   } 
   void draw() { 
     fill(255);
-    for (int i = 0; i < buttons.length; i++){
-      println(buttons[i]);
-    }
     image(button, xpos, ypos, buttonW, buttonH);
   } 
   

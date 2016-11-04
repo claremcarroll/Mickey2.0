@@ -2,10 +2,21 @@ import processing.video.*;
 import gab.opencv.*;
 import java.awt.Rectangle;
 import drop.*;
+import ddf.minim.*;
+
+Minim minim;
+AudioPlayer picture;
 
 PImage hat;
 int hatW = 300;
 int hatH = 300;
+
+int second = second();
+int minute = minute();
+int hour = hour();
+int day = day();
+int month = month();
+int year = year();
 
 PImage loadedhat1;
 PImage loadedhat2;
@@ -37,6 +48,13 @@ PImage button6;
 
 PImage gearimg;
 PImage arrowimg;
+PImage cameraimg;
+
+PImage background;
+PImage loadedbackground;
+PImage frame;
+
+boolean keypressed = false;
 
 MyDropListener drop1;
 MyDropListener drop2;
@@ -55,8 +73,9 @@ Hat[] allthehats;
 
 int hover;
 
-float scalingFactorW = 2.5;
-float scalingFactorH = 1.65;
+float scalingFactorW = 3.5;
+float scalingFactorH = 2.25;
+float scalingFactor = 2.5;
 
 int videoW = 320;
 int videoH = 240;
@@ -96,7 +115,9 @@ void setup(){
   background(255);
   drop = new SDrop(this);
   droparr = new MyDropListener[] {drop1, drop2, drop3, drop4, drop5, drop6};
-  
+  //sound
+  minim = new Minim(this);
+  picture = minim.loadFile("assets/picture.wav");
     // load in our PImages
     defhat1 = loadImage("assets/hat1.png");
     defhat2 = loadImage("assets/hat2.png");
@@ -119,25 +140,37 @@ void setup(){
     button5 = loadImage("assets/button5.png");
     button6 = loadImage("assets/button6.png");
     
+    background = loadImage("assets/background1.png");
+    frame = loadImage("assets/frame1.png");
+    cameraimg = loadImage("assets/camera.png");
+    
     buttons = new PImage[] { button1, button2, button3, button4, button5, button6 };
     
+    loadedhatimages = new PImage[6];
+    
     if(ifExists("loadedhat1.png")){
-      hat1 = loadImage("loadedhat1.png");
+      loadedhatimages[0] =  loadImage("loadedhat1.png");
+      hat1 = loadedhatimages[0];
     }
     if(ifExists("loadedhat2.png")){
-      hat2 = loadImage("loadedhat2.png");
+      loadedhatimages[1] =  loadImage("loadedhat2.png");
+      hat2 = loadedhatimages[1];
     }
     if(ifExists("loadedhat3.png")){
-      hat3 = loadImage("loadedhat3.png");
+      loadedhatimages[2] =  loadImage("loadedhat3.png");
+      hat3 = loadedhatimages[2];
     }
     if(ifExists("loadedhat4.png")){
-      hat4 = loadImage("loadedhat5.png");
+      loadedhatimages[3] =  loadImage("loadedhat4.png");
+      hat4 = loadedhatimages[3];
     }
     if(ifExists("loadedhat5.png")){
-      hat5 = loadImage("loadedhat5.png");
+      loadedhatimages[4] =  loadImage("loadedhat5.png");
+      hat5 = loadedhatimages[4];
     }
     if(ifExists("loadedhat6.png")){
-      hat6 = loadImage("loadedhat6.png");
+      loadedhatimages[5] =  loadImage("loadedhat6.png");
+      hat6 = loadedhatimages[5];
     }
 
     gearimg = loadImage("assets/gear.png");
@@ -151,7 +184,7 @@ void setup(){
     col2 = width - fromright - buttonW;
     col = fromleft;
     
-    loadedhatimages = new PImage[6];
+    
     hatimages = new PImage[] { hat1, hat2, hat3, hat4, hat5, hat6};
     
     
@@ -222,28 +255,6 @@ void setState(int s)
   state = s;
 }
 
-void resetHats() {
-   hat1 = defhat1; 
-   deleteFile("loadedhat1.png");
-   allthehats[0].image = hat1;
-   hat2 = defhat2; 
-   allthehats[1].image = hat2;
-   deleteFile("loadedhat2.png");
-   hat3 = defhat3; 
-   allthehats[2].image = hat3;
-   deleteFile("loadedhat3.png");
-   hat4 = defhat4; 
-   allthehats[3].image = hat4;
-   deleteFile("loadedhat4.png");
-   hat5 = defhat5; 
-   allthehats[4].image = hat5;
-   deleteFile("loadedhat5.png");
-   hat6 = defhat6;
-   allthehats[5].image = hat6;
-   deleteFile("loadedhat6.png");
-   hat = hat1;
-}
-
 void draw(){
   
   if( state == 1) {
@@ -251,16 +262,15 @@ void draw(){
   } else if (state == 2) {
     state2();
   }
-  
-  
-  
+
 }
 
 void exit() {
   for(int i = 0; i < loadedhatimages.length; i++) {
     int savenum = i+1;
+    println(loadedhatimages[i]);
    if(loadedhatimages[i] != null) {
-     hat.save(savePath("loadedhat"+savenum+".png"));
+     loadedhatimages[i].save(savePath("loadedhat"+savenum+".png"));
    }  
   }
   super.exit();
